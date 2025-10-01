@@ -1,0 +1,6 @@
+Input dimension no.:3
+Number of chains: 25
+Maximum number of cycles: 100
+Sample per cycle: 400
+Ratio of probing space range which will be the range of uniform distribution: 0.3
+Scaled gibbs distribution temperature (T): 0.2

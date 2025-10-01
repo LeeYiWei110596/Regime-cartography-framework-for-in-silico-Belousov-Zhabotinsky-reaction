@@ -1,0 +1,71 @@
+
+
+%% Description
+% Function details
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%**Description**
+% This function performs the Local Outlier Probability (LoOP) using the formula proposed by Kriegel et.al 
+% (2009) (doi: https://doi.org/10.1145/1645953.1646195). The function takes in a set of data and calculated
+% the LoOP for specfic points within the dataset. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% **Input**
+% nSample       - Number of points to sample. An integer. 
+% xBound        - Boundary of the input space. k x 2 matrix where k is the dimension of the input space.The 
+%                 first column indicates the lower bound where the second column represents the upper bound. 
+%                 Each row represents a input space dimension.
+% SampledPoints - Points that have been sampled from the input space. n x k matrix where n is the number of
+%                 data points that have been sampled from the input space, and k is the dimension of the input 
+%                 space.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% **Output**
+% DesignedPoints - Points sampled using the FSSF-fr algorithm. n x k matrix where n is the number of points 
+%                  sampled and k is the dimension of the input space.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function LoOP = LoOPFun(y,yIdxProbe,NN,lambda)
+
+[NNIdx,distance] = knnsearch(y,y,"K",NN+1);
+distance = distance(:,2:end);
+NNIdx = NNIdx(:,2:end);
+
+%Calculate pDist for each point
+pDist = lambda*((sum(distance.^2,2)./(NN)).^0.5);
+
+%Calculate PLOF for each sample point
+PLOF = (pDist./mean(pDist(NNIdx),2))-1;
+nPlOF = lambda*((mean(PLOF.^2,"all"))^0.5);
+
+%Calculate outlier probability for new samples
+LoOP = max(0,erf(PLOF(yIdxProbe)/(nPlOF*(2^0.5))));
+
+
+LoOP = zeros(size(yIdxProbe,1),1);
+yBase = y(1:yIdxProbe(1)-1);
+yProbe = y(yIdxProbe);
+
+for i = 1:size(yProbe,1)
+
+    AbsMap = [AbsMapBase;yIdxProbe(i,:)];
+
+    % Calculate k nearest neighbour distance for all abs map samples
+    [NNIdx,distance] = knnsearch(AbsMap,AbsMap,"K",NN+1);
+    distance = distance(:,2:end);
+    NNIdx = NNIdx(:,2:end);
+
+    % Calculate pDist for each point
+    pDist = lambda*((sum(distance.^2,2)./(NN)).^0.5);
+
+    % Calculate PLOF for each sample point
+    PLOF = (pDist./mean(pDist(NNIdx),2))-1;
+    nPlOF = lambda*((mean(PLOF.^2,"all"))^0.5);
+
+    % Calculate outlier probability of additional sample
+    OutlierProb(i) = max(0,erf(PLOF(end)/(nPlOF*(2^0.5))));
+
+end
+
+
+
+
+
+end
