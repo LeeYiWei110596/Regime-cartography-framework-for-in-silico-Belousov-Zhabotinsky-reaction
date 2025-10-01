@@ -1,4 +1,4 @@
-# In silico Belousov–Zhabotinsky (BZ) reaction system regime cartography code
+# In silico Belousov–Zhabotinsky (BZ) reaction regime cartography code
 
 ## Code overview
 The driver script is "BZRegimeCartographyMain.m". All parameters for the framework are initialize in the driver script, and through the driver script Matlab will execute the regime cartography framework. The custom functions are stored in the 'BZRegimeCartographySubFun' folder, which will be called by the driver script to execute specific processes. The sequences of the framework, and the purpose of each custom function are described in their respective Matlab script. The code takes about 5 hours to run on a laptop with Windows 11 Home, a 12th Gen Intel Core i7-12700H (2.30 GHz) CPU, and 32GB of RAM.
