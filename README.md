@@ -16,7 +16,7 @@ Regime 6 - Red
 ## Note on code reproducibility through Code Ocean's reproducible run
 The original code was executed using Matlab 2023b on a laptop with Windows 11 Home, a 12th Gen Intel Core i7-12700H (2.30 GHz) CPU, and 32GB of RAM.
 
-When the code was migrated to a new environment, minor differences in results arose from some of Matlab's inbuilt functions (like 'ode'). These differences causes differences in the trained neural network ensemble, hence the result generated will be slightly different from those published in the paper.For reference, the results presented in the manuscript are stored in 'Result'.
+When the code migrates to a new environment, minor differences in results arise from some of Matlab's inbuilt functions (like 'ode'). These differences causes differences in the trained neural network ensemble, hence the result generated will be slightly different from those published in the paper.For reference, the results presented in the manuscript are stored in 'Result'.
 
 <br>
 <br>
